@@ -35,7 +35,18 @@
                                 <i class="el-icon-lx-people grid-con-icon"></i>
                                 <div class="grid-cont-right">
                                     <div class="grid-num">1234</div>
-                                    <div>用户访问量</div>
+                                    <div>当日新增用户</div>
+                                </div>
+                            </div>
+                        </el-card>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-card shadow="hover" :body-style="{padding: '0px'}">
+                            <div class="grid-content grid-con-3">
+                                <i class="el-icon-lx-goods grid-con-icon"></i>
+                                <div class="grid-cont-right">
+                                    <div class="grid-num">5000</div>
+                                    <div>总用户量</div>
                                 </div>
                             </div>
                         </el-card>
@@ -47,17 +58,6 @@
                                 <div class="grid-cont-right">
                                     <div class="grid-num">321</div>
                                     <div>系统消息</div>
-                                </div>
-                            </div>
-                        </el-card>
-                    </el-col>
-                    <el-col :span="8">
-                        <el-card shadow="hover" :body-style="{padding: '0px'}">
-                            <div class="grid-content grid-con-3">
-                                <i class="el-icon-lx-goods grid-con-icon"></i>
-                                <div class="grid-cont-right">
-                                    <div class="grid-num">5000</div>
-                                    <div>数量</div>
                                 </div>
                             </div>
                         </el-card>
