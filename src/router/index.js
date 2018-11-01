@@ -37,10 +37,16 @@ export default new Router({
                     component:resolve => require(['../components/page/UserManagement.vue'],resolve),
                     meta: { title: '管理'}
                   },
+                
                   {
                     path:'/releaseatask',
                     component:resolve => require(['../components/page/ReleaseATask.vue'],resolve),
                     meta: { title: '发布任务'}
+                  },
+                  {
+                    path:'/taskmanagement',
+                    component:resolve => require(['../components/page/TaskManagement.vue'],resolve),
+                    meta: { title: '任务管理'}
                   },
                 {
                     // 权限页面

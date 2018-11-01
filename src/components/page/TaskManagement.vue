@@ -2,17 +2,17 @@
     <div class="table">
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i> 用户管理</el-breadcrumb-item>
+                <el-breadcrumb-item><i class="el-icon-sold-out"></i> 用户管理</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-button type="primary" icon="delete" class="handle-del mr10" >批量删除</el-button>
-                <el-button type="primary" icon="delete" class="handle-del mr11" >批量审核</el-button>
+                <!-- <el-button type="primary" icon="delete" class="handle-del mr10" >批量删除</el-button>
+                <el-button type="primary" icon="delete" class="handle-del mr11" >批量审核</el-button> -->
                  <el-select v-model="select_cate" placeholder="状态管理" class="handle-select mr10">
-                    <el-option key="1" label="审核通过" value="审核通过"></el-option>
-                    <el-option key="2" label="审核未通过" value="审核未通过"></el-option>
-                    <el-option key="3" label="未审核" value="未审核"></el-option>
+                    <el-option key="1" label="已提现" value="已提现"></el-option>
+                    <el-option key="2" label="未提现" value="未提现"></el-option>
+                    
                 </el-select>
                 <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
@@ -29,18 +29,15 @@
                 </el-table-column>
                 <el-table-column prop="phone" label="手机号"   width="120">
                 </el-table-column>
-                <el-table-column prop="password" label="密码" width="120">
-                </el-table-column>
                 <el-table-column prop="name" label="姓名"   width="120">
                 </el-table-column>
-                <el-table-column prop="papers" label="身份证号" width="180">
+                <el-table-column prop="money" label="提现金额（元）" width="120">
                 </el-table-column>
                 <el-table-column prop="alipayname"  label="支付宝姓名" width="100" >
                 </el-table-column>
-                
                  <el-table-column prop="alipay"  label="支付宝账户" width="160" >
                 </el-table-column>
-                <el-table-column prop="site"  label="收货地址" width="160" >
+                <el-table-column prop="accountBalance"  label="账户余额（元）" width="160" >
                 </el-table-column>
                  <el-table-column   label="操作" width="180" align="center">
                      <template slot-scope="scope">
@@ -70,7 +67,7 @@
                  <el-form-item label="ID">
                     <el-input v-model="form.uid"></el-input>
                 </el-form-item>
-                <el-form-item label="注册日期" >
+                <el-form-item label="提现日期" >
                     <el-date-picker type="date" placeholder="选择日期" v-model="form.date" style="width: 100%;"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="用户名">
@@ -79,14 +76,11 @@
                 <el-form-item label="手机号">
                     <el-input v-model="form.phone"></el-input>
                 </el-form-item>
-                 <el-form-item label="密码">
-                    <el-input v-model="form.password"></el-input>
-                </el-form-item>
                  <el-form-item label="姓名">
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
-                <el-form-item label="身份证">
-                    <el-input v-model="form.papers"></el-input>
+                <el-form-item label="提现金额">
+                    <el-input v-model="form.money"></el-input>
                 </el-form-item>
                 <el-form-item label="支付宝姓名">
                     <el-input v-model="form.alipayname"></el-input>
@@ -94,12 +88,12 @@
                 <el-form-item label="支付宝">
                     <el-input v-model="form.alipay"></el-input>
                 </el-form-item>
-                <el-form-item label="收货地址">
-                    <el-input v-model="form.alipay"></el-input>
+                <el-form-item label="账户余额">
+                    <el-input v-model="form.accountBalance"></el-input>
                 </el-form-item>
                  <div class="audit">
-                    <el-radio v-model="radio" label="1">审核通过</el-radio>
-                    <el-radio v-model="radio" label="2">审核不通过</el-radio>
+                    <el-radio v-model="radio" label="1">未提现</el-radio>
+                    <el-radio v-model="radio" label="2">已提现</el-radio>
                 </div>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -123,11 +117,11 @@ export default {
           nickname: "小二",
           phone: "17858025911",
           name:"曹子瑞",
-          password: "123456yhb",
-          papers: "338718199418913319",
+          money: "20",
           alipay: "17858025911",
           uid:'001',
           alipayname:'杨杰',
+          accountBalance:'100',
           examine:1
         },
         {
@@ -135,11 +129,11 @@ export default {
           nickname: "小三",
           phone: "17858025911",
           name:"曹子瑞",
-          password: "123456yhb",
-          papers: "338718199418913319",
+          money: "20",
           alipay: "17858025911",
           uid:'002',
           alipayname:'杨杰',
+           accountBalance:'100',
           examine:1
         },
         {
@@ -147,11 +141,11 @@ export default {
           nickname: "小四",
           phone: "17858025911",
           name:"曹子瑞",
-          password: "123456yhb",
-          papers: "338718199418913319",
+          money: "20",
           alipay: "17858025911",
           uid:'003',
           alipayname:'杨杰',
+           accountBalance:'100',
           examine:1
         },
         {
@@ -159,11 +153,11 @@ export default {
           nickname: "小五",
           phone: "17858025911",
           name:"曹子瑞",
-          password: "123456yhb",
-          papers: "338718199418913319",
+          money: "20",
           alipay: "17858025911",
           uid:'004',
           alipayname:'杨杰',
+           accountBalance:'100',
           examine:1
         },
         {
@@ -171,11 +165,11 @@ export default {
           nickname: "小六",
           phone: "17858025911",
           name:"曹子瑞",
-          password: "123456yhb",
-          papers: "338718199418913319",
+          money: "20",
           alipay: "17858025911",
           uid:'005',
           alipayname:'杨杰',
+           accountBalance:'100',
           examine:1
         }
       ],
@@ -192,10 +186,11 @@ export default {
             phone: '',
             alipay:'',
             papers:'',
-            password:'',
+            money:'',
             name:'',
             uid:'',
             alipayname:'',
+             accountBalance:'',
             examine:''
             },
         
@@ -226,11 +221,12 @@ export default {
                     date: item.date,
                     phone: item.phone,
                     nickname: item.nickname,
-                    password: item.password,
+                    money: item.money,
                     alipay: item.alipay,
                     papers: item.papers,
                     uid: item.uid,
                     alipayname: item.alipayname,
+                     accountBalance:item.accountBalance,
                 }
                 this.editVisible = true;
               

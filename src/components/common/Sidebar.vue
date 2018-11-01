@@ -60,6 +60,11 @@
                         index: 'usermanagement',
                         title: '用户管理'
                     },
+                    {
+                        icon: 'el-icon-lx-cascades',
+                        index: 'taskmanagement',
+                        title: '任务管理'
+                    },
                      {
                         icon: 'el-icon-document',
                         index: 'releaseatask',

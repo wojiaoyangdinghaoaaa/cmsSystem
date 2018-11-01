@@ -8,6 +8,22 @@
         <div class="container">
             <div class="container_cen">
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="140px" class="demo-ruleForm">
+             <el-form-item label="任务名称" prop="gameImg">
+              <el-upload
+                class="avatar-uploader"
+                :show-file-list="false"
+                with-credentials 
+                name="file"
+                :action="uploadUrl()" 
+                :on-error="uploadError"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+                enctype="multipart/form-data">
+                <img v-if="imageUrl" :src="noticeImageUrl" class="avatar">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+
+           </el-form-item>
             <el-form-item label="任务名称" prop="taskName">
                 <el-input v-model="ruleForm.taskName"></el-input>
             </el-form-item>
@@ -20,21 +36,31 @@
             <el-form-item label="任务时间（小时）"  prop='missionTime'>
                 <el-input v-model="ruleForm.missionTime"  ></el-input>
             </el-form-item>
+            
             <el-form-item label="九游下载"  prop='downloadJiuyou'>
             <el-input placeholder="请输入内容" v-model="ruleForm.downloadJiuyou">
-                <template slot="prepend">Http://</template>
+                <template slot="prepend"></template>
             </el-input>
               </el-form-item>
              <el-form-item label="当乐下载"  prop='downloadDangle'>
             <el-input placeholder="请输入内容" v-model="ruleForm.downloadDangle">
-                <template slot="prepend">Http://</template>
+                <template slot="prepend"></template>
             </el-input>
               </el-form-item>
              <el-form-item label="果盘下载"  prop='downloadGuopan'>
             <el-input placeholder="请输入内容" v-model="ruleForm.downloadGuopan">
-                <template slot="prepend">Http://</template>
+                <template slot="prepend"></template>
             </el-input>
               </el-form-item>
+               <el-form-item label="是否关闭任务 ">
+            <el-switch v-model="ruleForm.delivery"></el-switch>
+          </el-form-item>
+               <el-form-item label="任务状态">
+            <el-radio-group v-model="ruleForm.resource" size="medium">
+              <el-radio border label="任务进行中"></el-radio>
+              <el-radio border label="任务已结束"></el-radio>
+            </el-radio-group>
+          </el-form-item>
             <el-form-item label="任务详情" prop="taskdetail">
                 <el-input type="textarea" v-model="ruleForm.taskdetail"></el-input>
             </el-form-item>
@@ -53,14 +79,18 @@
   export default {
     data() {
       return {
+        gameImg:'',
+        imageUrl: '',
         ruleForm: {
           taskName: '',
           serialNumber: '',
           sum: '',
           missionTime: '',
+          delivery:false,
           downloadJiuyou: '',
           taskdetail: '',
           downloadDangle:'',
+           resource: '',
           downloadGuopan:''
         },
         rules: {
@@ -112,7 +142,47 @@
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
-      }
+      },
+      // 图片
+      uploadUrl() {
+        var url = process.env.BASE_API + "url" // 生产环境和开发环境的判断
+        return url
+    },
+    uploadError() {
+
+        this.$message.error('上传失败，请重新上传')
+        // this.showNoticeUploading = false
+      },
+      // 上传图片-成功
+      handleAvatarSuccess(res, file) {
+        if (this.activeName == '1') {
+          this.imageUrl = URL.createObjectURL(file.raw)
+          this.showNoticeUploading = false
+          this.noticeImageUrl = res
+          this.noteInform.templatePicture = res
+        } else if (this.activeName == '3') {
+          this.markingpic = URL.createObjectURL(file.raw)
+          this.showMarkingUploading = false
+          this.marketImageUrl = res
+          this.marketingInform.templatePicture = res
+        }
+      },
+      // 图片长传-之前
+       beforeAvatarUpload(file) {
+          this.showNoticeUploading = true
+          const isJPG = file.type === 'image/jpeg';
+          const isLt2M = file.size / 1024 / 1024 < 2;
+          if (!isJPG) {
+            this.$message.error('上传头像图片只能是 JPG 格式!')
+            return
+          }
+          if (!isLt2M) {
+            this.$message.error('上传头像图片大小不能超过 2MB!')
+            return
+          }   
+      },
+
+
     }
   }
 </script>
@@ -120,4 +190,27 @@
 
 <style>
 .container_cen{width: 800px}
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
 </style>
