@@ -70,6 +70,11 @@
                         index: 'releaseatask',
                         title: '发布任务'
                     },
+                     {
+                        icon: 'el-icon-phone-outline',
+                        index: 'systemnotice',
+                        title: '发布任务'
+                    },
                     {
                         icon: 'el-icon-lx-warn',
                         index: '6',

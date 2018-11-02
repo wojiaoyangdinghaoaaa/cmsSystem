@@ -46,7 +46,15 @@ export default new Router({
                   {
                     path:'/taskmanagement',
                     component:resolve => require(['../components/page/TaskManagement.vue'],resolve),
-                    meta: { title: '任务管理'}
+                    meta: { title: '任务管理'},
+                    // children:[
+
+                    // ]
+                  },
+                  {
+                    path:'/systemnotice',
+                    component:resolve => require(['../components/page/SystemNotice.vue'],resolve),
+                    meta: { title: '系统公告'}
                   },
                 {
                     // 权限页面

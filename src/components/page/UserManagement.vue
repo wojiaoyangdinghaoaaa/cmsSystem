@@ -20,7 +20,7 @@
                 <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%"  border>
                 <el-table-column type="selection" width="55">
                 </el-table-column>
-                <el-table-column prop="uid" label="ID" width="120">
+                <el-table-column prop="uid" label="ID" width="100">
                 </el-table-column>
                 <el-table-column label="注册日期"  width="120">
                 <template slot-scope="scope">{{ scope.row.date }}</template>
@@ -40,7 +40,7 @@
                 
                  <el-table-column prop="alipay"  label="支付宝账户" width="160" >
                 </el-table-column>
-                <el-table-column prop="site"  label="收货地址" width="160" >
+                <el-table-column prop="site"  label="收货地址" width="100" >
                 </el-table-column>
                  <el-table-column   label="操作" width="180" align="center">
                      <template slot-scope="scope">
@@ -95,7 +95,7 @@
                     <el-input v-model="form.alipay"></el-input>
                 </el-form-item>
                 <el-form-item label="收货地址">
-                    <el-input v-model="form.alipay"></el-input>
+                    <el-input v-model="form.site"></el-input>
                 </el-form-item>
                  <div class="audit">
                     <el-radio v-model="radio" label="1">审核通过</el-radio>
@@ -196,6 +196,7 @@ export default {
             name:'',
             uid:'',
             alipayname:'',
+            site:'',
             examine:''
             },
         
@@ -230,6 +231,7 @@ export default {
                     alipay: item.alipay,
                     papers: item.papers,
                     uid: item.uid,
+                    site:item.site,
                     alipayname: item.alipayname,
                 }
                 this.editVisible = true;

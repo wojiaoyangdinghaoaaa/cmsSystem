@@ -20,37 +20,31 @@
                 <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%"  border>
                 <el-table-column type="selection" width="55">
                 </el-table-column>
-                <el-table-column prop="uid" label="ID" width="120">
+                <el-table-column prop="serialNumber" label="任务编号" width="120">
                 </el-table-column>
-                <el-table-column label="注册日期"  width="120">
+                <el-table-column label="发布时间"  width="120">
                 <template slot-scope="scope">{{ scope.row.date }}</template>
                 </el-table-column>
-                <el-table-column prop="nickname" label="用户名" width="120">
+                <el-table-column prop="taskName" label="任务名称" width="120">
                 </el-table-column>
-                <el-table-column prop="phone" label="手机号"   width="120">
+                <el-table-column prop="sum" label="任务金额（元）"   width="120">
                 </el-table-column>
-                <el-table-column prop="name" label="姓名"   width="120">
+                <el-table-column prop="downloadJiuyou" label="九游下载"   width="120" :show-overflow-tooltip="true">
                 </el-table-column>
-                <el-table-column prop="money" label="提现金额（元）" width="120">
+                <el-table-column prop="downloadDangle" label="当乐下载" width="120" :show-overflow-tooltip="true">
                 </el-table-column>
-                <el-table-column prop="alipayname"  label="支付宝姓名" width="100" >
+                <el-table-column prop="downloadGuopan"  label="果盘下载" width="100" :show-overflow-tooltip="true">
                 </el-table-column>
-                 <el-table-column prop="alipay"  label="支付宝账户" width="160" >
+                 <el-table-column prop="alipay"  label="任务状态" width="160" >
                 </el-table-column>
-                <el-table-column prop="accountBalance"  label="账户余额（元）" width="160" >
+                <el-table-column prop="accountBalance"  label="任务详情" width="160" :show-overflow-tooltip="true">
                 </el-table-column>
                  <el-table-column   label="操作" width="180" align="center">
                      <template slot-scope="scope">
                       <el-button type="text" @click="handleEdit(scope.$index, scope.row)">确认信息</el-button>
                     </template>
                 </el-table-column>
-                 <el-table-column label="状态" align="center"  show-overflow-tooltip>
-                    <template slot-scope="scope">
-                        <el-button  type="warning" plain disabled  v-if="scope.row.examine==1">未审核</el-button>
-                         <el-button type="success" plain disabled v-else-if="scope.row.examine==2">已审核</el-button>
-                        <el-button type="danger"  disabled v-else-if="scope.row.examine==3">审核未通过</el-button>
-                    </template>
-                </el-table-column>
+                
 
             </el-table>
             
@@ -61,48 +55,7 @@
         </div>
 
        
-       <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-            <el-form :label-position="labelPosition" ref="form" :model="form" label-width="90px" >
-                 <el-form-item label="ID">
-                    <el-input v-model="form.uid"></el-input>
-                </el-form-item>
-                <el-form-item label="提现日期" >
-                    <el-date-picker type="date" placeholder="选择日期" v-model="form.date" style="width: 100%;"></el-date-picker>
-                </el-form-item>
-                <el-form-item label="用户名">
-                    <el-input v-model="form.nickname"></el-input>
-                </el-form-item>
-                <el-form-item label="手机号">
-                    <el-input v-model="form.phone"></el-input>
-                </el-form-item>
-                 <el-form-item label="姓名">
-                    <el-input v-model="form.name"></el-input>
-                </el-form-item>
-                <el-form-item label="提现金额">
-                    <el-input v-model="form.money"></el-input>
-                </el-form-item>
-                <el-form-item label="支付宝姓名">
-                    <el-input v-model="form.alipayname"></el-input>
-                </el-form-item>
-                <el-form-item label="支付宝">
-                    <el-input v-model="form.alipay"></el-input>
-                </el-form-item>
-                <el-form-item label="账户余额">
-                    <el-input v-model="form.accountBalance"></el-input>
-                </el-form-item>
-                 <div class="audit">
-                    <el-radio v-model="radio" label="1">未提现</el-radio>
-                    <el-radio v-model="radio" label="2">已提现</el-radio>
-                </div>
-            </el-form>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="editVisible = false">取 消</el-button>
-                <el-button type="primary" @click="saveEdit()">确 定</el-button>
-            </span>
-        </el-dialog>
-
-        <!-- 删除提示框 -->
+       
         
     </div>
 </template>
@@ -113,65 +66,17 @@ export default {
     return {
       tableData: [
         {
-          date: "2016-05-03",
-          nickname: "小二",
-          phone: "17858025911",
-          name:"曹子瑞",
-          money: "20",
-          alipay: "17858025911",
-          uid:'001',
-          alipayname:'杨杰',
-          accountBalance:'100',
-          examine:1
+          date: "36",
+          serialNumber: "000234",
+          taskName: "刺激战场",
+          sum:"5",
+          downloadJiuyou: "https://lanhuapp.com/web/#/item/board?pid=bdba9c5f-ea36-40c2-9dea-d2fcd385534a",
+          downloadDangle: "https://lanhuapp.com/web/#/item/board?pid=bdba9c5f-ea36-40c2-9dea-d2fcd385534a",
+          downloadGuopan:'https://lanhuapp.com/web/#/item/board?pid=bdba9c5f-ea36-40c2-9dea-d2fcd385534a',
+          alipay:'进行中',
+          accountBalance:'121213211111111111111111111111111111111111111111111111'
         },
-        {
-          date: "2016-05-03",
-          nickname: "小三",
-          phone: "17858025911",
-          name:"曹子瑞",
-          money: "20",
-          alipay: "17858025911",
-          uid:'002',
-          alipayname:'杨杰',
-           accountBalance:'100',
-          examine:1
-        },
-        {
-          date: "2016-05-03",
-          nickname: "小四",
-          phone: "17858025911",
-          name:"曹子瑞",
-          money: "20",
-          alipay: "17858025911",
-          uid:'003',
-          alipayname:'杨杰',
-           accountBalance:'100',
-          examine:1
-        },
-        {
-          date: "2016-05-03",
-          nickname: "小五",
-          phone: "17858025911",
-          name:"曹子瑞",
-          money: "20",
-          alipay: "17858025911",
-          uid:'004',
-          alipayname:'杨杰',
-           accountBalance:'100',
-          examine:1
-        },
-        {
-          date: "2016-05-03",
-          nickname: "小六",
-          phone: "17858025911",
-          name:"曹子瑞",
-          money: "20",
-          alipay: "17858025911",
-          uid:'005',
-          alipayname:'杨杰',
-           accountBalance:'100',
-          examine:1
-        }
+      
       ],
       select_word: '',
       select_cate: '',
@@ -181,17 +86,15 @@ export default {
       
        radio: '1',
       form: {
-            nickname: '',
-            date: '',
-            phone: '',
-            alipay:'',
-            papers:'',
-            money:'',
-            name:'',
-            uid:'',
-            alipayname:'',
-             accountBalance:'',
-            examine:''
+            date: "",
+          serialNumber: "",
+          taskName: "",
+          sum:"",
+          downloadJiuyou: "",
+          downloadDangle: "",
+          downloadGuopan:'',
+          alipay:'',
+          accountBalance:''
             },
         
       
@@ -214,6 +117,8 @@ export default {
     },
     // 点击获取值
      handleEdit(index, row) {
+          
+           
                 this.idx = index;
                 const item = this.tableData[index];
                 this.form = {
@@ -229,20 +134,20 @@ export default {
                      accountBalance:item.accountBalance,
                 }
                 this.editVisible = true;
-              
+              this.$router.push({ path: '/releaseatask' })
             },
     // 保存编辑
-            saveEdit() {
-                this.$set(this.tableData, this.idx, this.form);
-                this.editVisible = false;
-                this.$message.success(`设置成功`);
+            // saveEdit() {
+            //     this.$set(this.tableData, this.idx, this.form);
+            //     this.editVisible = false;
+            //     this.$message.success(`设置成功`);
                 
-                if(this.radio=='1'){
-                    this.form.examine=2;
-                }else if (this.radio=='2') {
-                    this.form.examine=3
-                }
-            },
+            //     if(this.radio=='1'){
+            //         this.form.examine=2;
+            //     }else if (this.radio=='2') {
+            //         this.form.examine=3
+            //     }
+            // },
             
   }
 };

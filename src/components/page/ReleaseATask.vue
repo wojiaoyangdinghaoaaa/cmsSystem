@@ -8,18 +8,14 @@
         <div class="container">
             <div class="container_cen">
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="140px" class="demo-ruleForm">
-             <el-form-item label="任务名称" prop="gameImg">
+             <el-form-item label="任务图" prop="gameImg">
               <el-upload
                 class="avatar-uploader"
+                action=""
                 :show-file-list="false"
-                with-credentials 
-                name="file"
-                :action="uploadUrl()" 
-                :on-error="uploadError"
                 :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload"
-                enctype="multipart/form-data">
-                <img v-if="imageUrl" :src="noticeImageUrl" class="avatar">
+                :before-upload="beforeAvatarUpload">
+                <img v-if="imageUrl" :src="imageUrl" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
 
@@ -64,9 +60,14 @@
             <el-form-item label="任务详情" prop="taskdetail">
                 <el-input type="textarea" v-model="ruleForm.taskdetail"></el-input>
             </el-form-item>
+            
+
             <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+                 <router-link to="" >
+                <el-button type="primary"  size="large" @click="submitForm('ruleForm')">立即创建</el-button>
+              </router-link>
                 <el-button @click="resetForm('ruleForm')">重置</el-button>
+                 
             </el-form-item>
             </el-form>
         </div>
@@ -79,6 +80,7 @@
   export default {
     data() {
       return {
+        editorOption: {},
         gameImg:'',
         imageUrl: '',
         ruleForm: {
@@ -128,12 +130,18 @@
         }
       };
     },
+   
     methods: {
+      
+      // 发布
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             alert('发布成功!');
             console.log(this.ruleForm)
+      
+          //  this.$router.push({ path: '/taskmanagement' })
+          this.$router.push('/taskmanagement')
           } else {
             console.log('error submit!!');
             return false;
@@ -143,47 +151,29 @@
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
-      // 图片
-      uploadUrl() {
-        var url = process.env.BASE_API + "url" // 生产环境和开发环境的判断
-        return url
-    },
-    uploadError() {
-
-        this.$message.error('上传失败，请重新上传')
-        // this.showNoticeUploading = false
-      },
-      // 上传图片-成功
+    
+     
+     // 图片   
       handleAvatarSuccess(res, file) {
-        if (this.activeName == '1') {
-          this.imageUrl = URL.createObjectURL(file.raw)
-          this.showNoticeUploading = false
-          this.noticeImageUrl = res
-          this.noteInform.templatePicture = res
-        } else if (this.activeName == '3') {
-          this.markingpic = URL.createObjectURL(file.raw)
-          this.showMarkingUploading = false
-          this.marketImageUrl = res
-          this.marketingInform.templatePicture = res
+        this.imageUrl = URL.createObjectURL(file.raw);
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!');
         }
-      },
-      // 图片长传-之前
-       beforeAvatarUpload(file) {
-          this.showNoticeUploading = true
-          const isJPG = file.type === 'image/jpeg';
-          const isLt2M = file.size / 1024 / 1024 < 2;
-          if (!isJPG) {
-            this.$message.error('上传头像图片只能是 JPG 格式!')
-            return
-          }
-          if (!isLt2M) {
-            this.$message.error('上传头像图片大小不能超过 2MB!')
-            return
-          }   
-      },
-
-
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
+      }
     }
+     
+      
+
+
   }
 </script>
 
