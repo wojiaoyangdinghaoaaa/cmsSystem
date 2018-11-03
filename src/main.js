@@ -3,6 +3,7 @@ import App from './App';
 import router from './router';
 import axios from 'axios';
 import ElementUI from 'element-ui';
+import moment from 'moment' 
 
 
 import 'element-ui/lib/theme-chalk/index.css';    // 默认主题
@@ -10,7 +11,11 @@ import 'element-ui/lib/theme-chalk/index.css';    // 默认主题
 import '../static/css/icon.css';
 import "babel-polyfill";
 
-
+Vue.filter('datefmt',function(input,fmtstring){       //转换时间戳
+    
+    return moment(input).format(fmtstring)
+    
+})
 
 Vue.use(ElementUI, { size: 'small' });
 Vue.prototype.$axios = axios;
