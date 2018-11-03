@@ -57,10 +57,20 @@
               <el-radio border label="任务已结束"></el-radio>
             </el-radio-group>
           </el-form-item>
-            <el-form-item label="任务详情" prop="taskdetail">
-                <el-input type="textarea" v-model="ruleForm.taskdetail"></el-input>
+            <el-form-item label="任务详情" prop="taskdetail" >
+              <el-input type="textarea" v-model="ruleForm.content"></el-input>
+                <!-- <quill-editor 
+                v-model="ruleForm.content" 
+                ref="myQuillEditor" 
+                :options="editorOption" 
+                @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
+                @change="onEditorChange($event)">
+              </quill-editor> -->
             </el-form-item>
-            
+            <el-form-item label="任务要求" prop="require" >
+              <el-input type="textarea" v-model="ruleForm.require"></el-input>
+                
+            </el-form-item>
 
             <el-form-item>
                  <router-link to="" >
@@ -77,10 +87,12 @@
 
 
 <script>
+ import { quillEditor } from 'vue-quill-editor'
   export default {
     data() {
       return {
-        editorOption: {},
+        
+        editorOption: {},//富文本编辑器
         gameImg:'',
         imageUrl: '',
         ruleForm: {
@@ -93,7 +105,9 @@
           taskdetail: '',
           downloadDangle:'',
            resource: '',
-          downloadGuopan:''
+          downloadGuopan:'',
+           content:'',
+           require:''
         },
         rules: {
           taskName: [
@@ -124,15 +138,26 @@
              { required: true, message: '请输入时间', trigger: 'blur' },
             { min: 1, max: 100, message: '长度在 1 到 100 个字符', trigger: 'blur' }
           ],
-          taskdetail: [
+          content: [
+            { required: true, message: '请填写任务要求', trigger: 'blur' }
+          ],
+          require: [
             { required: true, message: '请填写任务详情', trigger: 'blur' }
-          ]
+          ],
         }
       };
     },
    
     methods: {
-      
+        onEditorBlur(){//失去焦点事件
+
+            },
+            onEditorFocus(){//获得焦点事件
+
+            },
+            onEditorChange(){//内容改变事件
+                
+            },
       // 发布
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {

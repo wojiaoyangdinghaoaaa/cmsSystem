@@ -10,10 +10,20 @@
                 <!-- <el-button type="primary" icon="delete" class="handle-del mr10" >批量删除</el-button>
                 <el-button type="primary" icon="delete" class="handle-del mr11" >批量审核</el-button> -->
                  <el-select v-model="select_cate" placeholder="状态管理" class="handle-select mr10">
-                    <el-option key="1" label="已提现" value="已提现"></el-option>
-                    <el-option key="2" label="未提现" value="未提现"></el-option>
-                    
+                    <el-option key="1" label="任务进行中" value="任务进行中"></el-option>
+                    <el-option key="2" label="任务已结束" value="任务已结束"></el-option>
                 </el-select>
+
+                <el-date-picker
+                    v-model="value7"
+                    type="daterange"
+                    align="right"
+                    unlink-panels
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    :picker-options="pickerOptions2">
+                  </el-date-picker>
                 <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div> 
@@ -39,6 +49,8 @@
                 </el-table-column>
                 <el-table-column prop="accountBalance"  label="任务详情" width="160" :show-overflow-tooltip="true">
                 </el-table-column>
+                <el-table-column prop="require"  label="任务要求" width="160" :show-overflow-tooltip="true">
+                </el-table-column>
                  <el-table-column   label="操作" width="180" align="center">
                      <template slot-scope="scope">
                       <el-button type="text" @click="handleEdit(scope.$index, scope.row)">确认信息</el-button>
@@ -49,7 +61,13 @@
             </el-table>
             
             <div class="pagination">
-                <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="1000">
+                 <el-pagination
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                :page-sizes="[1, 2, 3, 4]"
+                :page-size="pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="totalItems">
                 </el-pagination>
             </div>
         </div>
@@ -74,13 +92,17 @@ export default {
           downloadDangle: "https://lanhuapp.com/web/#/item/board?pid=bdba9c5f-ea36-40c2-9dea-d2fcd385534a",
           downloadGuopan:'https://lanhuapp.com/web/#/item/board?pid=bdba9c5f-ea36-40c2-9dea-d2fcd385534a',
           alipay:'进行中',
-          accountBalance:'121213211111111111111111111111111111111111111111111111'
+          accountBalance:'121213211111111111111111111111111111111111111111111111',
+          require:'123123123123123123'
         },
       
       ],
       select_word: '',
       select_cate: '',
       is_search: false,
+      currentPage: 1,
+       pageSize: 2,
+      totalItems:1000,
       editVisible:false,
       labelPosition:'left',
       
@@ -94,10 +116,38 @@ export default {
           downloadDangle: "",
           downloadGuopan:'',
           alipay:'',
-          accountBalance:''
+          accountBalance:'',
+          require:''
             },
-        
-      
+        // 选择时间
+       pickerOptions2: {
+          shortcuts: [{
+        //     text: '最近一周',
+        //     onClick(picker) {
+        //       const end = new Date();
+        //       const start = new Date();
+        //       start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+        //       picker.$emit('pick', [start, end]);
+        //     }
+        //   }, {
+        //     text: '最近一个月',
+        //     onClick(picker) {
+        //       const end = new Date();
+        //       const start = new Date();
+        //       start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+        //       picker.$emit('pick', [start, end]);
+        //     }
+        //   }, {
+        //     text: '最近三个月',
+        //     onClick(picker) {
+        //       const end = new Date();
+        //       const start = new Date();
+        //       start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+        //       picker.$emit('pick', [start, end]);
+        //     }
+          }]
+        },
+        value7:''
     };
   },
    
@@ -132,6 +182,7 @@ export default {
                     uid: item.uid,
                     alipayname: item.alipayname,
                      accountBalance:item.accountBalance,
+                     require:item.require
                 }
                 this.editVisible = true;
               this.$router.push({ path: '/releaseatask' })

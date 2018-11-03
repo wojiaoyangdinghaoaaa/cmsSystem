@@ -56,6 +56,16 @@ export default new Router({
                     component:resolve => require(['../components/page/SystemNotice.vue'],resolve),
                     meta: { title: '系统公告'}
                   },
+                  {
+                    path:'/announce',
+                    component:resolve => require(['../components/page/Announce.vue'],resolve),
+                    meta: { title: '发布公告'}
+                  },
+                  {
+                    path:'/feedback',
+                    component:resolve => require(['../components/page/Feedback.vue'],resolve),
+                    meta: { title: '意见反馈'}
+                  },
                 {
                     // 权限页面
                     path: '/permission',

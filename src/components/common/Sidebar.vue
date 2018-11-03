@@ -73,7 +73,17 @@
                      {
                         icon: 'el-icon-phone-outline',
                         index: 'systemnotice',
-                        title: '发布任务'
+                        title: '系统公告'
+                    },
+                    {
+                        icon: 'el-icon-phone-outline',
+                        index: 'announce',
+                        title: '发布公告'
+                    },
+                    {
+                        icon: 'el-icon-phone-outline',
+                        index: 'feedback',
+                        title: '意见反馈'
                     },
                     {
                         icon: 'el-icon-lx-warn',

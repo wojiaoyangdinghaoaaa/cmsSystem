@@ -10,10 +10,20 @@
                 <!-- <el-button type="primary" icon="delete" class="handle-del mr10" >批量删除</el-button>
                 <el-button type="primary" icon="delete" class="handle-del mr11" >批量审核</el-button> -->
                  <el-select v-model="select_cate" placeholder="状态管理" class="handle-select mr10">
-                    <el-option key="1" label="已提现" value="已提现"></el-option>
-                    <el-option key="2" label="未提现" value="未提现"></el-option>
-                    
+                    <el-option key="1" label="已提现" value="1"></el-option>
+                    <el-option key="2" label="未提现" value="2"></el-option>
+                     <el-option key="3" label="未审核" value="3"></el-option>
                 </el-select>
+                <el-date-picker
+                    v-model="value7"
+                    type="daterange"
+                    align="right"
+                    unlink-panels
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    :picker-options="pickerOptions2">
+                  </el-date-picker>
                 <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div> 
@@ -47,15 +57,21 @@
                  <el-table-column label="状态" align="center"  show-overflow-tooltip>
                     <template slot-scope="scope">
                         <el-button  type="warning" plain disabled  v-if="scope.row.examine==1">未审核</el-button>
-                         <el-button type="success" plain disabled v-else-if="scope.row.examine==2">已审核</el-button>
-                        <el-button type="danger"  disabled v-else-if="scope.row.examine==3">审核未通过</el-button>
+                         <el-button type="success" plain disabled v-else-if="scope.row.examine==2">已提现</el-button>
+                        <el-button type="danger"  disabled v-else-if="scope.row.examine==3">未提现</el-button>
                     </template>
                 </el-table-column>
 
             </el-table>
             
             <div class="pagination">
-                <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="1000">
+                 <el-pagination
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                :page-sizes="[1, 2, 3, 4]"
+                :page-size="pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="totalItems">
                 </el-pagination>
             </div>
         </div>
@@ -94,6 +110,7 @@
                  <div class="audit">
                     <el-radio v-model="radio" label="1">未提现</el-radio>
                     <el-radio v-model="radio" label="2">已提现</el-radio>
+                   
                 </div>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -176,6 +193,9 @@ export default {
       select_word: '',
       select_cate: '',
       is_search: false,
+      currentPage: 1,
+       pageSize: 2,
+      totalItems:1000,
       editVisible:false,
       labelPosition:'left',
       
@@ -193,8 +213,35 @@ export default {
              accountBalance:'',
             examine:''
             },
-        
-      
+        // 选择时间
+       pickerOptions2: {
+          shortcuts: [{
+        //     text: '最近一周',
+        //     onClick(picker) {
+        //       const end = new Date();
+        //       const start = new Date();
+        //       start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+        //       picker.$emit('pick', [start, end]);
+        //     }
+        //   }, {
+        //     text: '最近一个月',
+        //     onClick(picker) {
+        //       const end = new Date();
+        //       const start = new Date();
+        //       start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+        //       picker.$emit('pick', [start, end]);
+        //     }
+        //   }, {
+        //     text: '最近三个月',
+        //     onClick(picker) {
+        //       const end = new Date();
+        //       const start = new Date();
+        //       start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+        //       picker.$emit('pick', [start, end]);
+        //     }
+          }]
+        },
+        value7:''
     };
   },
    

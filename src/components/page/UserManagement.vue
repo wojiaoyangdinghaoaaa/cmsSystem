@@ -17,7 +17,7 @@
                 <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div> 
-                <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%"  border>
+                <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%"  border >
                 <el-table-column type="selection" width="55">
                 </el-table-column>
                 <el-table-column prop="uid" label="ID" width="100">

@@ -73,9 +73,13 @@
       handlePictureCardPreview(file) {
         this.dialogImageUrl = file.url;
         this.dialogVisible = true;
-      }
+        
+      },
+      
     }
+    
   }
+  
 </script>
 
 <style scoped>
