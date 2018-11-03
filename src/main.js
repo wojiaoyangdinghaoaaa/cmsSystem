@@ -19,6 +19,8 @@ import '../static/css/icon.css';
 import "babel-polyfill";
 
 
+Vue.use(VueQuillEditor)
+
 Vue.filter('datefmt',function(input,fmtstring){       //转换时间戳
     
     return moment(input).format(fmtstring)
