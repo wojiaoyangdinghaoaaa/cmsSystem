@@ -2,7 +2,7 @@
     <div class="table">
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-lx-cascades"></i> 用户提现</el-breadcrumb-item>
+                <el-breadcrumb-item><i class="el-icon-lx-sort"></i> 首页管理</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         

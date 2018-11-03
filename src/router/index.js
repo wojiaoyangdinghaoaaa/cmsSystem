@@ -35,7 +35,7 @@ export default new Router({
                 {
                     path:'/usermanagement',
                     component:resolve => require(['../components/page/UserManagement.vue'],resolve),
-                    meta: { title: '管理'}
+                    meta: { title: '用户管理'}
                   },
                 
                   {
