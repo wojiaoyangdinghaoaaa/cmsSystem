@@ -7,11 +7,11 @@ import moment from 'moment'
 
 import  VueQuillEditor from 'vue-quill-editor';
 // require styles 引入样式
-import 'quill/dist/quill.core.css';
-import 'quill/dist/quill.snow.css';
-import 'quill/dist/quill.bubble.css';
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
 
-
+Vue.use(VueQuillEditor);
 
 import 'element-ui/lib/theme-chalk/index.css';    // 默认主题
 // import '../static/css/theme-green/index.css';       // 浅绿色主题
@@ -19,13 +19,15 @@ import '../static/css/icon.css';
 import "babel-polyfill";
 
 
-Vue.use(VueQuillEditor)
+
+
 
 Vue.filter('datefmt',function(input,fmtstring){       //转换时间戳
     
     return moment(input).format(fmtstring)
     
-})
+});
+
 
 
 Vue.use(ElementUI, { size: 'small' });

@@ -44,24 +44,24 @@
                         title: '系统首页'
                     },
                     {
-                        icon: 'el-icon-lx-home',
+                        icon: 'el-icon-lx-sort',
                         index: 'homeadministration',
                         title: '首页管理'
                     },
                    
                    
                     {
-                        icon: 'el-icon-sold-out',
+                        icon: 'el-icon-lx-recharge',
                         index: 'userwithdrawal',
                         title: '用户提现'
                     },
                     {
-                        icon: 'el-icon-lx-cascades',
+                        icon: 'el-icon-lx-people',
                         index: 'usermanagement',
                         title: '用户管理'
                     },
                     {
-                        icon: 'el-icon-lx-cascades',
+                        icon: 'el-icon-lx-copy',
                         index: 'taskmanagement',
                         title: '任务管理'
                     },
@@ -71,12 +71,12 @@
                         title: '发布任务'
                     },
                      {
-                        icon: 'el-icon-phone-outline',
+                        icon: 'el-icon-lx-message',
                         index: 'systemnotice',
                         title: '系统公告'
                     },
                     {
-                        icon: 'el-icon-phone-outline',
+                        icon: 'el-icon-lx-roundadd',
                         index: 'announce',
                         title: '发布公告'
                     },

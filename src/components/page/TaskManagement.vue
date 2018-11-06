@@ -2,7 +2,7 @@
     <div class="table">
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item><i class="el-icon-sold-out"></i> 用户管理</el-breadcrumb-item>
+                <el-breadcrumb-item><i class="el-icon-lx-copy"></i> 任务管理</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
