@@ -7,8 +7,8 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <!-- <el-button type="primary" icon="delete" class="handle-del mr10" >批量删除</el-button>
-                <el-button type="primary" icon="delete" class="handle-del mr11" >批量审核</el-button> -->
+                <el-button type="primary" icon="delete"  :disabled="btnDisabled" class="handle-del mr10" >批量删除</el-button>
+                <!-- <el-button type="primary" icon="delete"  :disabled="btnDisabled" class="handle-del mr11" >批量审核</el-button> -->
                  <el-select v-model="select_cate" placeholder="状态管理" class="handle-select mr10">
                     <el-option key="1" label="任务进行中" value="任务进行中"></el-option>
                     <el-option key="2" label="任务已结束" value="任务已结束"></el-option>
@@ -122,35 +122,36 @@ export default {
         // 选择时间
        pickerOptions2: {
           shortcuts: [{
-        //     text: '最近一周',
-        //     onClick(picker) {
-        //       const end = new Date();
-        //       const start = new Date();
-        //       start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-        //       picker.$emit('pick', [start, end]);
-        //     }
-        //   }, {
-        //     text: '最近一个月',
-        //     onClick(picker) {
-        //       const end = new Date();
-        //       const start = new Date();
-        //       start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-        //       picker.$emit('pick', [start, end]);
-        //     }
-        //   }, {
-        //     text: '最近三个月',
-        //     onClick(picker) {
-        //       const end = new Date();
-        //       const start = new Date();
-        //       start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-        //       picker.$emit('pick', [start, end]);
-        //     }
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
           }]
         },
         value7:''
     };
   },
-   
+
+
 
   methods: {
  //分页
