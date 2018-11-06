@@ -11,4 +11,6 @@ export const changeUserInfo= (params) => http.post('/user/update', params);     
 
 export const checkeUser= (status,params) => http.post(`/user/batchUpdateStatus?status=${status}`, params);      //批量审核用户接口  
 
+export const setTask= (params) => http.post('/task/insert', params);      //修改单个用户数据
+
 // export const register = (params) => http.post('/user/register', params);      // 注册接口

@@ -11,7 +11,7 @@
              <el-form-item label="任务图" prop="gameImg">
               <el-upload
                 class="avatar-uploader"
-                action=""
+                action="http://47.92.35.6:8080/api/common/qiniuUpload"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload">
@@ -87,6 +87,7 @@
 
 
 <script>
+import {setTask} from '../../api/getData';
  import { quillEditor } from 'vue-quill-editor'
   export default {
     data() {
@@ -164,9 +165,9 @@
           if (valid) {
             alert('发布成功!');
             console.log(this.ruleForm)
-      
-          //  this.$router.push({ path: '/taskmanagement' })
-          this.$router.push('/taskmanagement')
+    
+          // this.$router.push('/taskmanagement')
+          this.$router.push({path:'/taskmanagement'});
           } else {
             console.log('error submit!!');
             return false;
