@@ -10,7 +10,6 @@ let baseUrl = ''; //端口
 // http://47.92.35.6:8080/api/user/register
 let url = '47.92.35.6:8080/api'; //本地地址   
 
-
 if (process.env.NODE_ENV == 'development') { //本地   
 
     baseUrl = 'http://'+url;

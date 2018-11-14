@@ -105,7 +105,8 @@
 </template>
 
 <script>
-    import Schart from 'vue-schart';
+    import {getUserLoginState} from '../../api/getData';
+    import Schart from 'vue-schart';  
     import bus from '../common/bus';
     export default {
         name: 'dashboard',
@@ -224,6 +225,18 @@
                 this.$refs.bar.renderChart();
                 this.$refs.line.renderChart();
             }
+        },
+        created () {
+            var limit={
+                id:Number(this.$cookie.get('userId'))
+            }
+            getUserLoginState(limit).then(res=>{
+                if (res.data.success==false) {
+                    this.$router.push({path:'/login'});
+                    this.$message.error('登录过期，请重新登录！');
+                }
+
+            })
         }
     }
 

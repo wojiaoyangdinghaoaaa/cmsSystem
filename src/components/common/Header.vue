@@ -27,7 +27,7 @@
                 <!-- 用户名下拉菜单 -->
                 <el-dropdown class="user-name" trigger="click" @command="handleCommand">
                     <span class="el-dropdown-link">
-                        {{username}} <i class="el-icon-caret-bottom"></i>
+                        退出 <i class="el-icon-caret-bottom"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
                         <!-- <a href="" target="_blank">
@@ -64,7 +64,6 @@
             // 用户名下拉菜单选择事件
             handleCommand(command) {
                 if(command == 'loginout'){
-                    localStorage.removeItem('ms_username')
                     this.$router.push('/login');
                 }
             },
@@ -181,5 +180,6 @@
     }
     .el-dropdown-menu__item{
         text-align: center;
+        margin-top: -6px !important;
     }
 </style>

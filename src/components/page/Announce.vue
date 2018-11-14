@@ -1,122 +1,223 @@
 <template>
-   <div class="form-right">
-                        <div class="right_btns">转账汇款信息
-                            <el-button type="primary" @click="addupload" >+</el-button>
-                        </div>
-                        <div class="upload_parent" v-if="uploadShow" v-for="(item, index) in datas_upload" :key="index">
-                            <div class="defind_img_s">
-                                <img :src="item.url" class="defind">
-                                <el-upload
-                                        :ref='"upload" + index'
-                                        name="img_b"
-                                        class="upload-demo"
-                                        :action="uploadUrl"
-                                        :headers="upload_hearder"
-                                        :on-remove='handleRemove'
-                                        :on-success='uploadSuc'
-                                        :file-list='fileList'
-                                        :show-file-list="false">
-                                    <div @click='getUploadTag(item, index)' class="up_btns">{{item.up_btn}}</div>
-                                </el-upload>
-                                <span v-show="item.upbtnGroup" class="upbtnGroups"
-                                      @click="delupload(item,index)">删除</span>
-                            </div>
-                        </div>
-                    </div>
+    <div>
+        <div class="crumbs">
+            <el-breadcrumb separator="/">
+                <el-breadcrumb-item  v-if="from!='edit'"><i class="el-icon-lx-roundadd"></i>发布通告</el-breadcrumb-item>
+                <el-breadcrumb-item    v-else-if="from=='edit'"><i class="el-icon-lx-roundadd"></i>编辑通告</el-breadcrumb-item>
+            </el-breadcrumb>
+        </div>
+        <div class="container">
+            <div class="container_cen">
+          <el-form :model="ruleForm" ref="ruleForm" label-width="140px" class="demo-ruleForm">
+           <el-form-item label="通告标题" prop="title">
+                <el-input v-model="ruleForm.title"></el-input>
+            </el-form-item>
+            <el-form-item label="通告内容" prop="content" >
+                <el-input class="taskContent" type="textarea" v-model="ruleForm.content"></el-input>
+            </el-form-item>
+            <el-form-item label="通告类型">
+              <el-radio-group v-model="ruleForm.type" size="medium">
+                <el-radio border label="通知"></el-radio>
+                <el-radio border label="活动"></el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="通告状态">
+              <el-radio-group v-model="ruleForm.resource" size="medium">
+                <el-radio border label="上架"></el-radio>
+                <el-radio border label="下架"></el-radio>
+              </el-radio-group>
+            </el-form-item>
+
+            <el-form-item>
+                <el-button type="primary"  size="large" @click="submitForm()">立即创建</el-button>
+                <el-button size="large" @click="resetForm('ruleForm')">重置</el-button>
+            </el-form-item>
+            </el-form>
+        </div>
+        </div>
+    </div>
 </template>
- 
+
+
 <script>
-export default {
-   
- data() {
+import {setInform,getInformDetail,editInform,getUserLoginState} from '../../api/getData';
+  export default {
+    data() {
       return {
- // 上传成功后的id
-        uploadId: '',
-        // 重新上传成功后的id
-        resetUploadId: '',
-        // upload控件tag
-        uploadTag: 0,
-        // 上传图片文件列表
-        fileList: [],
-        upItem: {},
-//        所有账号-select
-        accVal: '1',
-//        图片上传框初始数组
-        datas_upload: [{ up_btn: '上传图片', upbtnGroup: false, imgId: '', url: '' }],
-//       图片初始id数组
-        imgArryid: [],
-
-
-      }  
-},
-methods: {
-
-//      点击“+”按钮生成图片上传框
-      addupload() {
-        this.datas_upload.push({ up_btn: '上传图片', upbtnGroup: false, imgId: '', url: '' })
-        console.log(11)
-      },
-//      获取图片id
-    getimgId() {
-      for (var i = 0; i < this.datas_upload.length; i++) {
-        this.imgArryid.push(this.datas_upload[i].imgId)
-      }
-      console.log(this.imgArryid, 785)
-      return this.imgArryid
+        ruleForm: {
+          title:'',
+          content: '',
+          type:'',
+          resource:''
+        },
+        limit:{},
+        from:'',
+        id:''
+      };
     },
-//      图片上传
-      getUploadTag(item, index) {
-//        console.log(response, file, fileList, 564)
-        this.uploadTag = index
-        console.log(index, 220)
-        this.upItem = item
-      },
-//      图片上传成功
-      uploadSuc(response, file, fileList) {
-        console.log(1230, response, response.id)
-        console.log(file, fileList, 6630)
-        // 把图片id添加到 uploadId 数据中
-        this.datas_upload[this.uploadTag].imgId = response.id
-        this.uploadId = response.id
-        this.upItem.up_btn = '重新上传图片'
-        this.upItem.upbtnGroup = true
-        var imgs = 'imgs' + this.uploadTag
-        console.log(this.$refs.imgs, 267)
-        this.upItem.url = file.url
-      },
-      //      上传图片-删除
-      delupload(item, index) {
-        console.log(index, 562)
-        for (var i = 0; i < this.datas_upload.length; i++) {
-          if (i != 0) {
-            if (index == i) {
-              this.datas_upload.splice(i, 1)
-              this.datas_upload[index].imgId = ''
-            }
-          } else if (i == 0) {
-            console.log(index, item, 563)
-            this.datas_upload[index].imgId = ''
-            this.datas_upload[index].url = ''
-            item.up_btn = '上传图片'
-            item.upbtnGroup = false
+   
+    methods: {
+      // 发布
+      submitForm(formName) {
+        if (this.ruleForm.title!='' && this.ruleForm.content!='' && this.ruleForm.type!='' && this.ruleForm.resource!='') {
+          // 新增
+          if(this.from!="edit"){
+              var type='';
+              var taskStatus='';
+              if (this.ruleForm.type=='通知') {
+                  type=1;
+              }else if(this.ruleForm.type=='活动'){
+                  type=2;
+              }
+              if (this.ruleForm.resource=='上架') {
+                  taskStatus=1;
+              }else if(this.ruleForm.resource=='下架'){
+                  taskStatus=0;
+              }
+              this.limit={
+                title:this.ruleForm.title,
+                content:this.ruleForm.content,
+                type:type,
+                status:taskStatus
+              }
+              setInform(this.limit).then(res=>{
+                  if (res.data.success==true) {
+                      this.$message({
+                          message: '创建成功!',
+                          type: 'success'
+                      });
+                      this.$router.push({path:'/systemnotice'});
+                    }else{
+                      this.$message(res.data.message);
+                    }
+              })
+          }else{
+            // 编辑
+            var type='';
+              var taskStatus='';
+              if (this.ruleForm.type=='通知') {
+                  type=1;
+              }else if(this.ruleForm.type=='活动'){
+                  type=2;
+              }
+              if (this.ruleForm.resource=='上架') {
+                  taskStatus=1;
+              }else if(this.ruleForm.resource=='下架'){
+                  taskStatus=0;
+              }
+              this.limit={
+                id:this.id,
+                title:this.ruleForm.title,
+                content:this.ruleForm.content,
+                type:type,
+                status:taskStatus
+              }
+              editInform(this.limit).then(res=>{
+                  if (res.data.success==true) {
+                      this.$message({
+                          message: '创建成功!',
+                          type: 'success'
+                      });
+                      this.$router.push({path:'/systemnotice'});
+                    }else{
+                      this.$message(res.data.message);
+                    }
+              })
           }
+              
+
+        }else{
+          this.$message('信息未填写完整,不能提交!');
         }
       },
-      // 重新上传-success
-      resetUploadSuc(response, file, fileList) {
-        this.resetUploadId = response.id
-        this.conResUploadView = false
-        this.conRessubmitView = true
+      // 重置数据
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+      },
+    },
+    created () {
+      
+      var limit={
+                id:Number(this.$cookie.get('userId'))
+            }
+            getUserLoginState(limit).then(res=>{
+                if (res.data.success==false) {
+                    this.$router.push({path:'/login'});
+                    this.$message.error('登录过期，请重新登录！');
+                }
+
+            })
+
+      this.from=this.$route.query.from;
+      this.id=this.$route.query.id;
+      if(this.from=="edit"){
+          let id='';
+          id={
+            id:this.id
+          }
+          getInformDetail(id).then(res=>{
+              if(res.data.success==true){
+                var data=res.data.data;
+                this.ruleForm.title=data.title;
+                this.ruleForm.content=data.content;
+                if(data.type==1){
+                    this.ruleForm.type='通知'
+                }else if(data.type==2){
+                    this.ruleForm.type='活动'
+                }
+                if(data.status==1){
+                    this.ruleForm.resource='上架'
+                }else if(data.status==0){
+                    this.ruleForm.resource='下架'
+                }
+              }else{
+                  this.$message(res.data.message);
+              }
+          })
       }
+    }
+     
+      
 
-}
-}
+
+  }
 </script>
-<style>
-.img_delete{
-    width: 100px;
-    height: 100px;
-    background: red
-}
 
+
+<style>
+.container_cen{width: 800px}
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .el-upload--text{
+    width: 180px !important;
+  }
+  .el-upload-dragger{
+    width: 180px !important;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
+  .el-textarea__inner{
+    height: 500px;
+    min-height: 500px;
+    resize:none;
+  }
 </style>

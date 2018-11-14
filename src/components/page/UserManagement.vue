@@ -38,34 +38,34 @@
 
                 <el-table-column type="selection" width="55">
                 </el-table-column>
-                <el-table-column prop="id" label="ID" width="100">
+                <el-table-column prop="id" label="ID" width="100" align="center" :show-overflow-tooltip="true">
                 </el-table-column>
-                <el-table-column label="注册日期"  width="140">
+                <el-table-column label="注册日期"  width="140" align="center" :show-overflow-tooltip="true">
                 <template slot-scope="scope">{{scope.row.createTime*1000 | datefmt('YYYY-MM-DD HH:mm:ss')}}</template>
                 </el-table-column>
-                <el-table-column prop="username" label="用户名" width="120">
+                <el-table-column prop="username" label="用户名" width="120" align="center" :show-overflow-tooltip="true">
                 </el-table-column>
-                <el-table-column prop="tel" label="手机号"   width="120">
+                <el-table-column prop="tel" label="手机号"   width="120" align="center" :show-overflow-tooltip="true">
                 </el-table-column>
-                <el-table-column prop="password" label="密码" width="120">
+                <el-table-column prop="password" label="密码" width="120" align="center" :show-overflow-tooltip="true">
                 </el-table-column>
-                <el-table-column prop="realName" label="姓名"   width="120">
+                <el-table-column prop="realName" label="姓名"   width="120" align="center" :show-overflow-tooltip="true">
                 </el-table-column>
-                <el-table-column prop="idNumber" label="身份证号" width="160">
+                <el-table-column prop="idNumber" label="身份证号" width="160" align="center" :show-overflow-tooltip="true">
                 </el-table-column>
-                <el-table-column prop="alipayRealName"  label="支付宝姓名" width="100" >
+                <el-table-column prop="alipayRealName"  label="支付宝姓名" width="100" align="center" :show-overflow-tooltip="true" >
                 </el-table-column>
                 
-                 <el-table-column prop="alipayAccount"  label="支付宝账户" width="160" >
+                 <el-table-column prop="alipayAccount"  label="支付宝账户" width="160" align="center" :show-overflow-tooltip="true" >
                 </el-table-column>
-                <el-table-column prop="site"  label="收货地址" width="100" >
+                <el-table-column prop="site"  label="收货地址" width="100" align="center" :show-overflow-tooltip="true" >
                 </el-table-column>
-                 <el-table-column   label="操作" width="180" align="center">
+                 <el-table-column   label="操作" width="180" align="center" :show-overflow-tooltip="true">
                      <template slot-scope="scope">
                       <el-button type="text" @click="handleEdit(scope.$index, scope.row)">确认信息</el-button>
                     </template>
                 </el-table-column>
-                 <el-table-column label="状态" align="center"  show-overflow-tooltip>
+                 <el-table-column label="状态" align="center"   :show-overflow-tooltip="true">
                     <template slot-scope="scope">
                         <el-button  type="warning" plain disabled  v-if="scope.row.status==0">未审核</el-button>
                          <el-button type="success" plain disabled v-else-if="scope.row.status==1">审核通过</el-button>
@@ -157,7 +157,7 @@
 </template>
 
 <script>
-import {getUserList,deleteUser,checkeUser,changeUserInfo} from '../../api/getData';
+import {getUserList,deleteUser,checkeUser,changeUserInfo,getUserLoginState} from '../../api/getData';
 import moment from 'moment' 
 
 export default {
@@ -239,10 +239,10 @@ export default {
         this.limit={
           pageSize:this.pageSizes,
           pageIndex:this.page,
-          status:this.userStatus,
+          status:this.userStatus ? this.userStatus : null,
           tel:this.select_word ? this.select_word : null,
-          startTime:this.srartTime ? this.srartTime/1000 : null,
-          endTime:this.endTime ? this.endTime/1000 : null
+          startTime:this.srartTime ? parseInt(this.srartTime/1000) : null,
+          endTime:this.endTime ? parseInt(this.endTime/1000) : null
         }
         this.getPages(this.limit);
     },
@@ -251,7 +251,11 @@ export default {
         this.page=val;
         this.limit={
           pageSize:this.pageSizes,
-          pageIndex:this.page
+          pageIndex:this.page,
+          status:this.userStatus ? this.userStatus : null,
+          tel:this.select_word ? this.select_word : null,
+          startTime:this.srartTime ? parseInt(this.srartTime/1000) : null,
+          endTime:this.endTime ? parseInt(this.endTime/1000) : null
         }
         this.getPages(this.limit);
     },
@@ -272,10 +276,10 @@ export default {
         this.limit={
           pageSize:this.pageSizes,
           pageIndex:this.page,
-          status:this.userStatus,
+          status:this.userStatus ? this.userStatus : null,
           tel:this.select_word ? this.select_word : null,
-          startTime:this.srartTime ? this.srartTime/1000 : null,
-          endTime:this.endTime ? this.endTime/1000 : null
+          startTime:this.srartTime ? parseInt(this.srartTime/1000) : null,
+          endTime:this.endTime ? parseInt(this.endTime/1000) : null
         }
         if (this.select_cate || this.select_word ||this.checkTime) {
             this.getPages(this.limit);
@@ -290,7 +294,7 @@ export default {
                 const item = this.tableData[index];
                 this.form = {
                     realName: item.realName,
-                    createTime: moment(item.createTime).format("YYYY-MM-DD HH:mm:ss"),
+                    createTime: moment(item.createTime*1000).format("YYYY-MM-DD HH:mm:ss"),
                     tel: item.tel,
                     username: item.username,
                     password: item.password,
@@ -451,7 +455,7 @@ export default {
                 for(let i=0;i<checkedLists.length;i++){
                     this.ids.push(checkedLists[i].id);
                 }
-                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
@@ -493,7 +497,19 @@ export default {
           pageIndex:this.page
       }
     this.getPages(this.limit);
-  }
+  },
+  created () {
+            var limit={
+                id:Number(this.$cookie.get('userId'))
+            }
+            getUserLoginState(limit).then(res=>{
+                if (res.data.success==false) {
+                    this.$router.push({path:'/login'});
+                    this.$message.error('登录过期，请重新登录！');
+                }
+
+            })
+        }
 };
 </script>
 

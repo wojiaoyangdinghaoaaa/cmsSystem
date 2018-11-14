@@ -7,69 +7,76 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-button type="primary" icon="delete"  :disabled="btnDisabled" class="handle-del mr10" >批量删除</el-button>
-                <!-- <el-button type="primary" icon="delete"  :disabled="btnDisabled" class="handle-del mr11" >批量审核</el-button> -->
+                <el-button type="primary" icon="delete"   :disabled="btnDisabled" @click="batchDele" class="handle-del mr10" >删除</el-button>
                  <el-select v-model="select_cate" placeholder="状态管理" class="handle-select mr10">
-                    <el-option key="1" label="任务进行中" value="任务进行中"></el-option>
-                    <el-option key="2" label="任务已结束" value="任务已结束"></el-option>
+                    <el-option key="1" label="全部" value="全部"></el-option>
+                    <el-option key="2" label="上架" value="上架"></el-option>
+                    <el-option key="3" label="下架" value="下架"></el-option>
                 </el-select>
 
                 <el-date-picker
-                    v-model="value7"
+                    v-model="checkTime"
                     type="daterange"
-                    align="right"
+                    align="center"
                     unlink-panels
                     range-separator="至"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
                     :picker-options="pickerOptions2">
-                  </el-date-picker>
-                <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
+                </el-date-picker>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
             </div> 
-                <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%"  border>
-                <el-table-column type="selection" width="55">
-                </el-table-column>
-                <el-table-column prop="serialNumber" label="任务编号" width="120">
-                </el-table-column>
-                <el-table-column label="发布时间"  width="120">
-                <template slot-scope="scope">{{ scope.row.date }}</template>
-                </el-table-column>
-                <el-table-column prop="taskName" label="任务名称" width="120">
-                </el-table-column>
-                <el-table-column prop="sum" label="任务金额（元）"   width="120">
-                </el-table-column>
-                <el-table-column prop="downloadJiuyou" label="九游下载"   width="120" :show-overflow-tooltip="true">
-                </el-table-column>
-                <el-table-column prop="downloadDangle" label="当乐下载" width="120" :show-overflow-tooltip="true">
-                </el-table-column>
-                <el-table-column prop="downloadGuopan"  label="果盘下载" width="100" :show-overflow-tooltip="true">
-                </el-table-column>
-                 <el-table-column prop="alipay"  label="任务状态" width="160" >
-                </el-table-column>
-                <el-table-column prop="accountBalance"  label="任务详情" width="160" :show-overflow-tooltip="true">
-                </el-table-column>
-                <el-table-column prop="require"  label="任务要求" width="160" :show-overflow-tooltip="true">
-                </el-table-column>
-                 <el-table-column   label="操作" width="180" align="center">
-                     <template slot-scope="scope">
-                      <el-button type="text" @click="handleEdit(scope.$index, scope.row)">确认信息</el-button>
+                <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%"  border  @selection-change="selectChange"  @select="checked"  @select-all="allChecked">
+                    <el-table-column type="selection" width="55">
+                    </el-table-column>
+                    <el-table-column prop="id" label="任务ID" width="90" align="center" :show-overflow-tooltip="true">
+                    </el-table-column>
+                    <el-table-column prop="code" label="任务编号" width="100" align="center" :show-overflow-tooltip="true">
+                    </el-table-column>
+                    <el-table-column label="发布时间"  width="140" align="center" :show-overflow-tooltip="true">
+                        <template slot-scope="scope">{{scope.row.createTime*1000 | datefmt('YYYY-MM-DD HH:mm:ss')}}</template>
+                    </el-table-column>
+                    <el-table-column prop="title" label="任务名称" width="120" align="center" :show-overflow-tooltip="true">
+                    </el-table-column>
+                    <el-table-column prop="price" label="任务金额（元）"   width="110" align="center" :show-overflow-tooltip="true">
+                    </el-table-column>
+                    <el-table-column prop="jiuyouDownload" label="九游下载"   width="120" align="center" :show-overflow-tooltip="true">
+                    </el-table-column>
+                    <el-table-column prop="dangleDownload" label="当乐下载" width="120" align="center" :show-overflow-tooltip="true">
+                    </el-table-column>
+                    <el-table-column prop="guopanDownload"  label="果盘下载" width="110" align="center" :show-overflow-tooltip="true">
+                    </el-table-column>
+                    <el-table-column prop="status"  label="任务状态" align="center" width="100" >
+                    <template slot-scope="scope">
+                        <el-button type="success" plain disabled v-if="scope.row.status==1">上架</el-button>
+                        <el-button type="danger"  disabled v-else-if="scope.row.status==0">下架</el-button>
                     </template>
-                </el-table-column>
+                    </el-table-column>
+                    <el-table-column prop="content"  label="任务详情" width="160" align="center" :show-overflow-tooltip="true">
+                    </el-table-column>
+                    <el-table-column prop="goal"  label="任务要求" width="160" align="center" :show-overflow-tooltip="true">
+                    </el-table-column>
+                    <el-table-column   label="操作" width="150" align="center">
+                        <template slot-scope="scope">
+                            <el-button type="text" @click="handleEdit(scope.$index, scope.row)">确认信息</el-button>
+                        </template>
+                    </el-table-column>
                 
 
             </el-table>
             
+            <!-- 分页 -->
             <div class="pagination">
-                 <el-pagination
+                <el-pagination background 
+                @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
-                :current-page="currentPage"
-                :page-sizes="[1, 2, 3, 4]"
-                :page-size="pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="totalItems">
+                :current-page="page"
+                :page-sizes="[20,50,100, 200, 400,1000]" 
+                layout="total, sizes, prev, pager, next, jumper" 
+                :total="data.total">
                 </el-pagination>
             </div>
+
         </div>
 
        
@@ -79,36 +86,16 @@
 </template>
 
 <script>
+import {getTaskList,deleteTask,getUserLoginState} from '../../api/getData';
 export default {
   data() {
     return {
-      tableData: [
-        {
-          date: "36",
-          serialNumber: "000234",
-          taskName: "刺激战场",
-          sum:"5",
-          downloadJiuyou: "https://lanhuapp.com/web/#/item/board?pid=bdba9c5f-ea36-40c2-9dea-d2fcd385534a",
-          downloadDangle: "https://lanhuapp.com/web/#/item/board?pid=bdba9c5f-ea36-40c2-9dea-d2fcd385534a",
-          downloadGuopan:'https://lanhuapp.com/web/#/item/board?pid=bdba9c5f-ea36-40c2-9dea-d2fcd385534a',
-          alipay:'进行中',
-          accountBalance:'121213211111111111111111111111111111111111111111111111',
-          require:'123123123123123123'
-        },
-      
-      ],
-      select_word: '',
+      tableData: [],
+      btnDisabled:true,
       select_cate: '',
-      is_search: false,
-      currentPage: 1,
-       pageSize: 2,
-      totalItems:1000,
-      editVisible:false,
-      labelPosition:'left',
-      
-       radio: '1',
       form: {
-            date: "",
+          taskId:"",
+          date: "",
           serialNumber: "",
           taskName: "",
           sum:"",
@@ -117,7 +104,7 @@ export default {
           downloadGuopan:'',
           alipay:'',
           accountBalance:'',
-          require:''
+          require:'',
             },
         // 选择时间
        pickerOptions2: {
@@ -147,61 +134,165 @@ export default {
             }
           }]
         },
-        value7:''
+        checkedLists:'',
+        selectLists:'',
+        checkTime:'',
+        srartTime:'',
+        endTime:'',
+        userStatus:'',
+        limit:'',
+        data:'',
+        page:1,
+        pageSizes:20,
     };
   },
 
 
 
   methods: {
- //分页
+ //每页条数
+    handleSizeChange(val) {
+        this.pageSizes=val;
+        this.limit={
+          pageSize:this.pageSizes,
+          pageIndex:this.page,
+          status:this.userStatus ? this.userStatus : null,
+          startTime:this.srartTime ? parseInt(this.srartTime/1000) : null,
+          endTime:this.endTime ? parseInt(this.endTime/1000) : null
+        }
+        this.getPages(this.limit);  
+    },
+    //页数
     handleCurrentChange(val) {
-                this.cur_page = val;
-                
-                 console.log(val)
-            },
-           
- 
+        this.page=val;
+        this.limit={
+          pageSize:this.pageSizes,
+          pageIndex:this.page,
+          status:this.userStatus ? this.userStatus : null,
+          startTime:this.srartTime ? parseInt(this.srartTime/1000) : null,
+          endTime:this.endTime ? parseInt(this.endTime/1000) : null
+        }
+        this.getPages(this.limit);
+    },
     // 搜索
     search() {
-         this.is_search = true;
+        this.page=1;
+        this.srartTime=this.checkTime[0];
+        this.endTime=this.checkTime[1];
+        if (this.select_cate=="全部") {
+            this.userStatus=null;
+        }else if(this.select_cate=="下架"){
+            this.userStatus=0;
+        }else if(this.select_cate=="上架"){
+            this.userStatus=1;
+        }
+
+        this.limit={
+          pageSize:this.pageSizes,
+          pageIndex:this.page,
+          status:this.userStatus ? this.userStatus : null,
+          startTime:this.srartTime ? parseInt(this.srartTime/1000) : null,
+          endTime:this.endTime ? parseInt(this.endTime/1000) : null
+        }
+        if (this.select_cate || this.checkTime) {
+            this.getPages(this.limit);
+        }else{
+            this.$message('先选择搜索要求，再进行搜索!');
+        }
+
     },
     // 点击获取值
      handleEdit(index, row) {
-          
-           
-                this.idx = index;
-                const item = this.tableData[index];
-                this.form = {
-                    name: item.name,
-                    date: item.date,
-                    phone: item.phone,
-                    nickname: item.nickname,
-                    money: item.money,
-                    alipay: item.alipay,
-                    papers: item.papers,
-                    uid: item.uid,
-                    alipayname: item.alipayname,
-                     accountBalance:item.accountBalance,
-                     require:item.require
-                }
-                this.editVisible = true;
-              this.$router.push({ path: '/releaseatask' })
+                if(row.id){
+                    this.$router.push({ path: '/releaseatask',query:{from:'edit',id:row.id}});
+                }else{
+                    this.$message('请刷新后再试一次!');
+                }    
             },
-    // 保存编辑
-            // saveEdit() {
-            //     this.$set(this.tableData, this.idx, this.form);
-            //     this.editVisible = false;
-            //     this.$message.success(`设置成功`);
-                
-            //     if(this.radio=='1'){
-            //         this.form.examine=2;
-            //     }else if (this.radio=='2') {
-            //         this.form.examine=3
-            //     }
-            // },
-            
-  }
+            // 单选事件
+            checked(e){
+                this.checkedLists=e;          
+            },
+            // 全选事件
+            allChecked(e){
+                this.checkedLists=e;
+            },
+            // change事件
+            selectChange(e){
+                this.selectLists=e;
+                if (this.selectLists!='') {
+                    this.btnDisabled=false;
+                }else{
+                    this.btnDisabled=true;
+                }
+            },
+            // 删除事件
+            batchDele(){
+                var id='';
+                if(this.checkedLists.length>1){
+                    this.$message('对不起,一次只能删除一条数据!');
+                }else{
+                    id={
+                        id:this.checkedLists[0].id
+                    }
+                        this.$confirm('此操作将永久删除该任务, 是否继续?', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            deleteTask(id).then(res=>{
+                                if (res.data.success==true) {
+                                    this.$message({
+                                        message: '删除成功!',
+                                        type: 'success'
+                                    });
+                                    this.limit={
+                                        pageSize:this.pageSizes,
+                                        pageIndex:this.page
+                                    }
+                                    this.getPages(this.limit);
+                                }else{
+                                    this.$message('删除未成功，请刷新后重新删除!');
+                                }
+                            });
+                        }).catch(() => {
+                            this.$message({
+                                type: 'info',
+                                message: '已取消删除'
+                            });          
+                        });
+                }
+
+               
+
+            },
+            // 获取分页请求
+      getPages(limit){
+          getTaskList (limit).then(res=>{
+              this.tableData=res.data.data.list;
+              this.data=res.data.data;
+          })
+      },      
+  },
+  mounted () {
+      this.limit={
+          pageSize:this.pageSizes,
+          pageIndex:this.page
+      }
+      this.getPages(this.limit);
+  },
+  created () {
+            var limit={
+                id:Number(this.$cookie.get('userId'))
+            }
+            getUserLoginState(limit).then(res=>{
+                if (res.data.success==false) {
+                    this.$router.push({path:'/login'});
+                    this.$message.error('登录过期，请重新登录！');
+                }
+
+            })
+        }
 };
 </script>
 

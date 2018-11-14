@@ -4,12 +4,12 @@
             <div class="ms-title">后台管理系统</div>
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="ms-content">
                 <el-form-item prop="username">
-                    <el-input v-model="ruleForm.username" placeholder="username">
+                    <el-input v-model="ruleForm.username" placeholder="用户名">
                         <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input type="password" placeholder="password" v-model="ruleForm.password" @keyup.enter.native="submitForm('ruleForm')">
+                    <el-input type="password" placeholder="密码" v-model="ruleForm.password" @keyup.enter.native="submitForm('ruleForm')">
                         <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
                     </el-input>
                 </el-form-item>
@@ -23,12 +23,13 @@
 </template>
 
 <script>
+import {login} from '../../api/getData';
     export default {
         data: function(){
             return {
                 ruleForm: {
-                    username: 'admin',
-                    password: '123123'
+                    username:'',// 'admin',
+                    password: ''//'123123'
                 },
                 rules: {
                     username: [
@@ -44,14 +45,32 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        localStorage.setItem('ms_username',this.ruleForm.username);
-                        this.$router.push('/');
+                        var limit={
+                            loginName:this.ruleForm.username,
+                            password:this.ruleForm.password
+                        }
+                        login(limit).then(res=>{
+                            setTimeout(()=>{
+                                if (res.data.success==true) {
+                                    this.$cookie.set('userId', res.data.data.id, 365);
+                                    this.$message({
+                                        message: '登录成功!',
+                                        type: 'success'
+                                    });
+                                    this.$router.push({path:'/'});
+                                }else{
+                                    this.$message.error(res.data.message);
+                                }
+                            },1000);
+                        })
                     } else {
-                        console.log('error submit!!');
-                        return false;
+                        this.$message.error('用户名和密码不能为空!');
                     }
                 });
             }
+        },
+        created () {
+            this.$cookie.delete('userId');
         }
     }
 </script>

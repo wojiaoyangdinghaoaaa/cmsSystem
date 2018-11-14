@@ -48,6 +48,16 @@
                         index: 'homeadministration',
                         title: '首页管理'
                     },
+                    {
+                        icon: 'el-icon-document',
+                        index: 'images',
+                        title: '轮播图'
+                    },
+                    {
+                        icon: 'el-icon-lx-roundadd',
+                        index: 'addimage',
+                        title: '添加轮播图'
+                    },
                    
                    
                     {
@@ -59,6 +69,11 @@
                         icon: 'el-icon-lx-people',
                         index: 'usermanagement',
                         title: '用户管理'
+                    },
+                    {
+                        icon: 'el-icon-edit',
+                        index: 'checkTask',
+                        title: '任务审核'
                     },
                     {
                         icon: 'el-icon-lx-copy',

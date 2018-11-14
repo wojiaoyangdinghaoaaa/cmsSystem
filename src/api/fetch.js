@@ -71,6 +71,30 @@ export default{
             })
         },
 
+        postParam(url, param,data) {
+            return new Promise((resolve, reject) => {
+                if (!param) {
+                    param = {};
+                }
+                axios({
+                    method: 'post',
+                    params: param,
+                    url,
+                }).then(res => {
+                    // if (res.status == 200 && (res.data.ResultCode === '000012' || res.data.ResultCode === '000011')) {
+
+                    //     return;
+                    // }
+                    // if (res.status == 200 && res.data.ResultCode && res.data.ResultCode != '000000') {
+
+                    // }
+                    resolve(res);
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            })
+        },
+
 
 
 }

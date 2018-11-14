@@ -24,6 +24,16 @@ export default new Router({
                     component: resolve => require(['../components/page/HomeAdministration.vue'], resolve),
                     meta: { title: '首页管理' }
                 },
+                {
+                    path: '/images',
+                    component: resolve => require(['../components/page/Images.vue'], resolve),
+                    meta: { title: '轮播图' }
+                },
+                {
+                    path: '/addimage',
+                    component: resolve => require(['../components/page/AddImage.vue'], resolve),
+                    meta: { title: '添加轮播图' }
+                },
                
                
                 {
@@ -36,6 +46,12 @@ export default new Router({
                     path:'/usermanagement',
                     component:resolve => require(['../components/page/UserManagement.vue'],resolve),
                     meta: { title: '用户管理'}
+                  },
+                
+                {
+                    path:'/checkTask',
+                    component:resolve => require(['../components/page/CheckTask.vue'],resolve),
+                    meta: { title: '任务审核'}
                   },
                 
                   {
