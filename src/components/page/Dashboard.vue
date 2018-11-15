@@ -6,8 +6,8 @@
                     <div class="user-info">
                         <img src="static/img/img.jpg" class="user-avator" alt="">
                         <div class="user-info-cont">
-                            <div class="user-info-name">{{name}}</div>
-                            <div>{{role}}</div>
+                            <div class="user-info-name">小乐</div>
+                            <div>高级管理员</div>
                         </div>
                     </div>
                     <div class="user-info-list">上次登录时间：<span>2018-01-01</span></div>
