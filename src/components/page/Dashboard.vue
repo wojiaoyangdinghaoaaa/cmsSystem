@@ -15,15 +15,15 @@
                 </el-card>
                 <el-card shadow="hover" style="height:252px;">
                     <div slot="header" class="clearfix">
-                        <span>语言详情</span>
+                        <span>时间安排</span>
                     </div>
-                    Vue
+                    上班
                     <el-progress :percentage="71.3" color="#42b983"></el-progress>
-                    JavaScript
+                    工作
                     <el-progress :percentage="24.1" color="#f1e05a"></el-progress>
-                    CSS
+                    休息
                     <el-progress :percentage="3.7"></el-progress>
-                    HTML
+                    泡妞
                     <el-progress :percentage="0.9" color="#f56c6c"></el-progress>
                 </el-card>
             </el-col>
@@ -34,7 +34,7 @@
                             <div class="grid-content grid-con-3">
                                 <i class="el-icon-lx-people grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">1234</div>
+                                    <div class="grid-num">{{newUserNumToday}}</div>
                                     <div>当日新增用户</div>
                                 </div>
                             </div>
@@ -45,7 +45,7 @@
                             <div class="grid-content grid-con-1">
                                 <i class="el-icon-lx-people grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">5000</div>
+                                    <div class="grid-num">{{allUserNum}}</div>
                                     <div>总用户数</div>
                                 </div>
                             </div>
@@ -56,7 +56,7 @@
                             <div class="grid-content grid-con-2">
                                 <i class="el-icon-lx-recharge grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">321</div>
+                                    <div class="grid-num getMomey">{{getMoneyNumToday}}</div>
                                     <div>当日提现总额</div>
                                 </div>
                             </div>
@@ -65,7 +65,7 @@
                 </el-row>
                 <el-card shadow="hover" style="height:403px;">
                     <div slot="header" class="clearfix">
-                        <span>待办事项</span>
+                        <span>名言</span>
                         <!-- <el-button style="float: right; padding: 3px 0" type="text">添加</el-button> -->
                     </div>
                     <el-table :data="todoList" :show-header="false" height="304" style="width: 100%;font-size:14px;">
@@ -105,36 +105,43 @@
 </template>
 
 <script>
-    import {getUserLoginState} from '../../api/getData';
+    import {getUserLoginState,getHomeNum} from '../../api/getData';
     import Schart from 'vue-schart';  
     import bus from '../common/bus';
     export default {
         name: 'dashboard',
         data() {
             return {
-                name: localStorage.getItem('ms_username'),
-                todoList: [{
-                        title: '今天要修复100个bug',
+                newUserNumToday:'',
+                allUserNum:'',
+                getMoneyNumToday:'',
+                todoList: [
+                    {
+                        title: '解决一个问题的方法有无数种。',
                         status: false,
                     },
                     {
-                        title: '今天要修复100个bug',
-                        status: false,
-                    },
-                    {
-                        title: '今天要写100行代码加几个bug吧',
+                        title: '世上最累人的事，莫过於虚伪的过日子。',
                         status: false,
                     }, {
-                        title: '今天要修复100个bug',
+                        title: '世上没有绝望的处境，只有对处境绝望的人。',
                         status: false,
                     },
                     {
-                        title: '今天要修复100个bug',
-                        status: true,
+                        title: '即使是不成熟的尝试，也胜于胎死腹中的策略。',
+                        status: false,
                     },
                     {
-                        title: '今天要写100行代码加几个bug吧',
-                        status: true,
+                        title: '勇士搏出惊涛骇流而不沉沦，懦夫在风平浪静也会溺水。',
+                        status: false,
+                    },
+                    {
+                        title: '每一个成功者都有一个开始。勇于开始，才能找到成功的路。',
+                        status: false,
+                    },
+                    {
+                        title: '有事者，事竟成；破釜沉舟，百二秦关终归楚；苦心人，天不负；卧薪尝胆，三千越甲可吞吴。',
+                        status: false,
                     }
                 ],
                 data: [{
@@ -226,6 +233,13 @@
                 this.$refs.line.renderChart();
             }
         },
+        mounted () {
+          getHomeNum().then(res=>{
+                this.newUserNumToday=res.data.data.newUserSizeToday;
+                this.allUserNum=res.data.data.totalUserSize;
+                this.getMoneyNumToday=res.data.data.withdrawMoneyToday;
+          })  
+        },
         created () {
             var limit={
                 id:Number(this.$cookie.get('userId'))
@@ -264,6 +278,10 @@
     .grid-num {
         font-size: 30px;
         font-weight: bold;
+    }
+
+    .getMomey{
+        color: rgb(100, 213, 114) !important;
     }
 
     .grid-con-icon {
@@ -321,7 +339,7 @@
     }
 
     .user-info-cont div:first-child {
-        font-size: 30px;
+        font-size: 28px;
         color: #222;
     }
 
@@ -353,4 +371,8 @@
         height: 300px;
     }
 
+    .user-info-name{
+        margin: 0 0 8px 4px;
+        font-size: 28px;
+    }
 </style>

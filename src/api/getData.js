@@ -61,7 +61,9 @@ export const getUserPutMomey = (params) => http.get('/withdraw/list', params);  
 
 export const checkUserPutMomey = (params) => http.postParam('/withdraw/confirm', params);      // 审核用户提现申请接口
 
-export const deleteUserPutMomey = (params) => http.postParam('/withdraw/delete', params);      // 删除用户提现数据接口
+export const deleteUserPutMomey = (params) => http.postParam('/withdraw/delete', params);      // 删除用户提现数据接口 
+
+export const getHomeNum = (params) => http.get('/record/getAdminRecord', params);      // 获取首页数据统计接口
 
 
 

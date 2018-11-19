@@ -36,7 +36,7 @@ Vue.filter('datefmt',function(input,fmtstring){       //转换时间戳
 Vue.use(ElementUI, { size: 'small' });
 Vue.prototype.$axios = axios;
 
-//使用钩子函数对路由进行权限跳转
+// 使用钩子函数对路由进行权限跳转
 // router.beforeEach((to, from, next) => {
 //     const role = localStorage.getItem('ms_username');
 //     if(!role && to.path !== '/login'){
@@ -55,6 +55,16 @@ Vue.prototype.$axios = axios;
 //         }
 //     }
 // })
+
+// 使用钩子函数对路由进行权限跳转
+router.beforeEach((to, from, next) => {
+    const role = VueCookie.get('userId');
+    if(!role && to.path !== '/login'){
+        next('/login');
+    }else{
+        next();
+    }
+})
 
 new Vue({
     router,
