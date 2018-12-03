@@ -34,6 +34,14 @@
                     <el-form-item label="已完成:">
                         <el-input class="input-field" v-model="finish"></el-input>
                     </el-form-item>
+                    <el-form-item label="详情1" >
+                        <!-- <el-input class="bannerTop" type="textarea" row="40" v-model="bannerTop"></el-input> -->
+                        <textarea  class="bannerTop" v-model="bannerTop"></textarea>
+                    </el-form-item>
+                    <el-form-item label="详情2">
+                        <!-- <el-input class="bannerBottom" type="textarea" v-model="bannerBottom"></el-input> -->
+                        <textarea  class="bannerBottom" v-model="bannerBottom"></textarea>
+                    </el-form-item>
                 </el-form>
             </div>
            <div class="pagination">
@@ -58,7 +66,8 @@ import {getIndexNum,editIndexNum,getUserLoginState} from '../../api/getData';
         issue: '',
         finish: '',
         limit:'',
-        
+        bannerTop:'',
+        bannerBottom:'' 
       };
     },
     methods: {
@@ -67,7 +76,9 @@ import {getIndexNum,editIndexNum,getUserLoginState} from '../../api/getData';
             this.limit={
               userCount:this.allMoods,
               taskCount:this.issue,
-              finishCount:this.finish
+              finishCount:this.finish,
+              alpha:this.bannerTop,
+              gamma:this.bannerBottom
             }
             editIndexNum(this.limit).then(res=>{
                 if(res.data.success==true){
@@ -90,6 +101,8 @@ import {getIndexNum,editIndexNum,getUserLoginState} from '../../api/getData';
                 this.allMoods=res.data.data.userCount;
                 this.issue=res.data.data.taskCount;
                 this.finish=res.data.data.finishCount;
+                this.bannerTop=res.data.data.alpha;
+                this.bannerBottom=res.data.data.gamma;
             }else{
                 this.$message(res.data.message);
             }
@@ -124,7 +137,17 @@ import {getIndexNum,editIndexNum,getUserLoginState} from '../../api/getData';
         text-align: left;
     }
     .btn{
-        width: 90px;
-        margin-left: 136px;
+        width: 116px;
+        margin-left: 60px;
+    }
+    .bannerTop{
+        height: 610px;
+        width: 600px;
+        resize: none;
+    }
+    .bannerBottom{
+        height: 610px;
+        width: 600px;
+        resize: none;
     }
 </style>
